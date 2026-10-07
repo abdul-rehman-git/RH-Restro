@@ -1,0 +1,69 @@
+[Sat Jul 25 22:03:03 2026] PHP 8.3.30 Development Server (http://127.0.0.1:8000) started
+[Sat Jul 25 22:12:28 2026] 127.0.0.1:53603 Accepted
+[Sat Jul 25 22:12:30 2026] 127.0.0.1:53603 Closing
+[Sat Jul 25 22:45:40 2026] 127.0.0.1:51566 Accepted
+[Sat Jul 25 22:45:40 2026] 127.0.0.1:64770 Accepted
+[Sat Jul 25 22:45:42 2026] 127.0.0.1:51566 Closing
+[Sat Jul 25 22:46:42 2026] 127.0.0.1:64770 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sat Jul 25 22:46:42 2026] 127.0.0.1:64770 Closing
+[Sat Jul 25 22:46:49 2026] 127.0.0.1:61366 Accepted
+[Sat Jul 25 22:46:49 2026] 127.0.0.1:61366 [200]: GET /favicon.ico
+[Sat Jul 25 22:46:49 2026] 127.0.0.1:61366 Closing
+[Sat Jul 25 22:58:41 2026] 127.0.0.1:58526 Accepted
+[Sat Jul 25 22:58:41 2026] 127.0.0.1:51244 Accepted
+[Sat Jul 25 22:58:43 2026] 127.0.0.1:58526 Closing
+[Sat Jul 25 22:58:46 2026] 127.0.0.1:55315 Accepted
+[Sat Jul 25 22:58:50 2026] 127.0.0.1:51244 Closing
+[Sat Jul 25 22:58:50 2026] 127.0.0.1:55272 Accepted
+[Sat Jul 25 22:58:53 2026] 127.0.0.1:55315 Closing
+[Sat Jul 25 22:58:56 2026] 127.0.0.1:55272 Closing
+[Sat Jul 25 22:59:55 2026] 127.0.0.1:51684 Accepted
+[Sat Jul 25 22:59:55 2026] 127.0.0.1:51684 [200]: GET /favicon.ico
+[Sat Jul 25 22:59:55 2026] 127.0.0.1:51684 Closing
+[Sat Jul 25 22:59:55 2026] 127.0.0.1:57696 Accepted
+[Sat Jul 25 22:59:55 2026] 127.0.0.1:57696 [200]: GET /favicon.ico
+[Sat Jul 25 22:59:55 2026] 127.0.0.1:57696 Closing
+[Sat Jul 25 23:02:12 2026] 127.0.0.1:50184 Accepted
+[Sat Jul 25 23:02:18 2026] 127.0.0.1:50184 Closing
+[Sat Jul 25 23:02:18 2026] 127.0.0.1:61052 Accepted
+[Sat Jul 25 23:02:21 2026] 127.0.0.1:61052 Closing
+[Sat Jul 25 23:02:57 2026] 127.0.0.1:64596 Accepted
+[Sat Jul 25 23:02:58 2026] 127.0.0.1:64596 Closing
+[Sat Jul 25 23:05:32 2026] 127.0.0.1:64479 Accepted
+[Sat Jul 25 23:05:35 2026] 127.0.0.1:64479 Closing
+[Sat Jul 25 23:06:09 2026] 127.0.0.1:56987 Accepted
+[Sat Jul 25 23:06:11 2026] 127.0.0.1:56987 Closing
+[Sat Jul 25 23:06:40 2026] 127.0.0.1:55960 Accepted
+[Sat Jul 25 23:06:40 2026] 127.0.0.1:55960 [200]: GET /favicon.ico
+[Sat Jul 25 23:06:40 2026] 127.0.0.1:55960 Closing
+[Sat Jul 25 23:14:50 2026] 127.0.0.1:56139 Accepted
+[Sat Jul 25 23:14:50 2026] 127.0.0.1:62323 Accepted
+[Sat Jul 25 23:14:54 2026] 127.0.0.1:56139 Closing
+[Sat Jul 25 23:15:51 2026] 127.0.0.1:62323 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sat Jul 25 23:15:51 2026] 127.0.0.1:62323 Closing
+[Sat Jul 25 23:16:10 2026] 127.0.0.1:63047 Accepted
+[Sat Jul 25 23:16:10 2026] 127.0.0.1:58571 Accepted
+[Sat Jul 25 23:16:17 2026] 127.0.0.1:58571 Closing
+[Sat Jul 25 23:16:18 2026] 127.0.0.1:63047 [200]: GET /favicon.ico
+[Sat Jul 25 23:16:18 2026] 127.0.0.1:63047 Closing
+[Sat Jul 25 23:17:43 2026] 127.0.0.1:64906 Accepted
+[Sat Jul 25 23:17:43 2026] 127.0.0.1:64906 [200]: GET /favicon.ico
+[Sat Jul 25 23:17:43 2026] 127.0.0.1:64906 Closing
+[Sun Jul 26 00:00:19 2026] 127.0.0.1:58189 Accepted
+[Sun Jul 26 00:00:24 2026] 127.0.0.1:58189 Closing
+[Sun Jul 26 00:01:44 2026] 127.0.0.1:54139 Accepted
+[Sun Jul 26 00:01:44 2026] 127.0.0.1:59388 Accepted
+[Sun Jul 26 00:01:59 2026] 127.0.0.1:54139 Closing
+[Sun Jul 26 00:02:47 2026] 127.0.0.1:59388 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sun Jul 26 00:02:47 2026] 127.0.0.1:59388 Closing
+[Sun Jul 26 00:09:10 2026] 127.0.0.1:52462 Accepted
+[Sun Jul 26 00:09:10 2026] 127.0.0.1:65465 Accepted
+[Sun Jul 26 00:09:16 2026] 127.0.0.1:65465 Closing
+[Sun Jul 26 00:10:35 2026] 127.0.0.1:52462 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sun Jul 26 00:10:35 2026] 127.0.0.1:52462 Closing
+[Sun Jul 26 00:11:41 2026] 127.0.0.1:62714 Accepted
+[Sun Jul 26 00:11:41 2026] 127.0.0.1:62714 [200]: GET /favicon.ico
+[Sun Jul 26 00:11:41 2026] 127.0.0.1:62714 Closing
+[Sun Jul 26 00:11:49 2026] 127.0.0.1:65365 Accepted
+[Sun Jul 26 00:11:49 2026] 127.0.0.1:65365 [200]: GET /favicon.ico
+[Sun Jul 26 00:11:49 2026] 127.0.0.1:65365 Closing

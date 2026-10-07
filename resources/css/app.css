@@ -1,0 +1,171 @@
+@import 'filepond/dist/filepond.min.css';
+@import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+@import './filepond.css';
+@import './public/luxury.css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+    --gold: #F59E0B;
+    --gold-light: #FDE68A;
+    --gold-dark: #D97706;
+    --amber: #F59E0B;
+    --flame: #EA580C;
+    --cream: #F8FAFC;
+    --warm-beige: #F1F5F9;
+    --charcoal: #0F172A;
+    --deep-black: #0B0F19;
+    --font-size: 16px;
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --card: #FFFFFF;
+    --card-foreground: #0F172A;
+    --popover: #FFFFFF;
+    --popover-foreground: #0F172A;
+    --primary: #F59E0B;
+    --primary-foreground: #0B0F19;
+    --secondary: #F1F5F9;
+    --secondary-foreground: #0F172A;
+    --muted: #F1F5F9;
+    --muted-foreground: #64748B;
+    --accent: #FDE68A;
+    --accent-foreground: #0F172A;
+    --destructive: #EF4444;
+    --destructive-foreground: #ffffff;
+    --border: #E2E8F0;
+    --input: transparent;
+    --input-background: #FFFFFF;
+    --switch-background: #E2E8F0;
+    --font-weight-medium: 500;
+    --font-weight-normal: 400;
+    --ring: #F59E0B;
+    --radius: 0.75rem;
+    --sidebar: #FFFFFF;
+    --sidebar-foreground: #0F172A;
+    --sidebar-primary: #F59E0B;
+    --sidebar-primary-foreground: #0B0F19;
+    --sidebar-accent: #F8FAFC;
+    --sidebar-accent-foreground: #0F172A;
+    --sidebar-border: #E2E8F0;
+    --sidebar-ring: #F59E0B;
+}
+
+.dark {
+    --background: #0B0F19;
+    --foreground: #F8FAFC;
+    --card: #131B2E;
+    --card-foreground: #F8FAFC;
+    --popover: #131B2E;
+    --popover-foreground: #F8FAFC;
+    --primary: #F59E0B;
+    --primary-foreground: #0B0F19;
+    --secondary: #1E293B;
+    --secondary-foreground: #F8FAFC;
+    --muted: #1E293B;
+    --muted-foreground: #94A3B8;
+    --accent: #D97706;
+    --accent-foreground: #F8FAFC;
+    --destructive: #EF4444;
+    --destructive-foreground: #ffffff;
+    --border: rgba(245, 158, 11, 0.2);
+    --input: rgba(245, 158, 11, 0.1);
+    --input-background: #1E293B;
+    --ring: #F59E0B;
+    --sidebar: #0B0F19;
+    --sidebar-foreground: #F8FAFC;
+    --sidebar-primary: #F59E0B;
+    --sidebar-primary-foreground: #0B0F19;
+    --sidebar-accent: #1E293B;
+    --sidebar-accent-foreground: #F8FAFC;
+    --sidebar-border: rgba(245, 158, 11, 0.2);
+    --sidebar-ring: #F59E0B;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        border-color: var(--border);
+        outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
+    }
+
+    html {
+        font-size: var(--font-size);
+    }
+
+    body {
+        background-color: var(--background);
+        color: var(--foreground);
+    }
+
+    h1 {
+        font-size: var(--text-2xl);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    h2 {
+        font-size: var(--text-xl);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    h3 {
+        font-size: var(--text-lg);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    h4 {
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    label {
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    button {
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    input {
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-normal);
+        line-height: 1.5;
+    }
+}
+
+/* Inertia NProgress Flame Progress Bar */
+#nprogress .bar {
+    background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 50%, #EA580C 100%) !important;
+    height: 3px !important;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.7), 0 0 5px rgba(234, 88, 12, 0.5) !important;
+}
+
+#nprogress .peg {
+    box-shadow: 0 0 12px #F59E0B, 0 0 6px #EA580C !important;
+}
+
+#nprogress .spinner-icon {
+    border-top-color: #F59E0B !important;
+    border-left-color: #EA580C !important;
+}
+
+/* Global Select & Option Dark Mode Fix */
+.dark select {
+    color-scheme: dark;
+}
+
+.dark option {
+    background-color: #0F172A;
+    color: #F8FAFC;
+}
+

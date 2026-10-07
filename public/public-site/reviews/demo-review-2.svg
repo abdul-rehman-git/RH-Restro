@@ -1,0 +1,17 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" rx="36" fill="#0F1115"/>
+  <rect x="48" y="48" width="704" height="504" rx="28" fill="url(#bg)"/>
+  <path d="M152 444L314 150L462 322L566 214L648 444H152Z" fill="url(#mountain)"/>
+  <circle cx="584" cy="168" r="58" fill="#F7D879"/>
+  <path d="M180 424H620" stroke="#D4AF37" stroke-opacity="0.55" stroke-width="12" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="bg" x1="76" y1="84" x2="720" y2="534" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1E2530"/>
+      <stop offset="1" stop-color="#11161E"/>
+    </linearGradient>
+    <linearGradient id="mountain" x1="254" y1="150" x2="558" y2="432" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0C05A"/>
+      <stop offset="1" stop-color="#68552A"/>
+    </linearGradient>
+  </defs>
+</svg>

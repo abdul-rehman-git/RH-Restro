@@ -1,0 +1,16 @@
+[Sat Jul 25 17:12:28 2026] 127.0.0.1:53603 [GET] URI: /
+[Sat Jul 25 17:45:40 2026] 127.0.0.1:51566 [GET] URI: /
+[Sat Jul 25 17:58:41 2026] 127.0.0.1:58526 [GET] URI: /
+[Sat Jul 25 17:58:48 2026] 127.0.0.1:51244 [GET] URI: /dashboard
+[Sat Jul 25 17:58:50 2026] 127.0.0.1:55315 [GET] URI: /dashboard
+[Sat Jul 25 17:58:53 2026] 127.0.0.1:55272 [GET] URI: /login
+[Sat Jul 25 18:02:12 2026] 127.0.0.1:50184 [POST] URI: /login
+[Sat Jul 25 18:02:18 2026] 127.0.0.1:61052 [GET] URI: /dashboard
+[Sat Jul 25 18:02:57 2026] 127.0.0.1:64596 [GET] URI: /api/dashboard/stats
+[Sat Jul 25 18:05:32 2026] 127.0.0.1:64479 [GET] URI: /products
+[Sat Jul 25 18:06:09 2026] 127.0.0.1:56987 [GET] URI: /products/create
+[Sat Jul 25 18:14:50 2026] 127.0.0.1:56139 [GET] URI: /products/create
+[Sat Jul 25 18:16:10 2026] 127.0.0.1:58571 [GET] URI: /
+[Sat Jul 25 19:00:20 2026] 127.0.0.1:58189 [GET] URI: /products
+[Sat Jul 25 19:01:44 2026] 127.0.0.1:54139 [GET] URI: /products/create
+[Sat Jul 25 19:09:10 2026] 127.0.0.1:65465 [GET] URI: /

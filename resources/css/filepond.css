@@ -1,0 +1,53 @@
+.filepond--root {
+    margin-bottom: 0;
+    font-family: inherit;
+}
+
+.filepond--panel-root {
+    border: 1px dashed rgba(148, 163, 184, 0.6);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.filepond--drop-label {
+    min-height: 15rem;
+    color: rgb(51 65 85);
+}
+
+.filepond-label-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.filepond-label-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: rgb(100 116 139);
+}
+
+.filepond--item-panel {
+    background: rgb(15 23 42);
+}
+
+.filepond--file-action-button {
+    cursor: pointer;
+}
+
+.dark .filepond--panel-root {
+    border-color: rgba(51, 65, 85, 0.9);
+    background: rgba(15, 20, 29, 0.96);
+}
+
+.dark .filepond--drop-label {
+    color: rgb(226 232 240);
+}
+
+.dark .filepond-label-hint {
+    color: rgb(148 163 184);
+}
+
+.dark .filepond--file {
+    color: rgb(226 232 240);
+}
