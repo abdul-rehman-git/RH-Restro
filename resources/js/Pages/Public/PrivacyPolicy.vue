@@ -14,7 +14,7 @@ const page = usePage();
         <div class="min-h-screen bg-background">
             <section class="py-8 sm:py-20 bg-background">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <SectionHeader title="Privacy Policy" subtitle="How we collect, use, and protect your personal information." centered />
+                    <SectionHeader tag="h1" title="Privacy Policy" subtitle="How we collect, use, and protect your personal information." centered />
                     <div class="mt-8 sm:mt-12 space-y-6 sm:space-y-8 text-sm sm:text-base text-muted-foreground leading-relaxed">
                         <div v-reveal="{ preset: 'fadeUp', duration: 600 }">
                             <h2 class="text-xl font-semibold text-foreground mb-3 flex items-center gap-2">

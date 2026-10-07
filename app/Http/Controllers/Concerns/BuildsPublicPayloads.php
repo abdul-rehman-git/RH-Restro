@@ -129,6 +129,6 @@ trait BuildsPublicPayloads
             ...$extra,
         ];
 
-        return SeoService::tags($page, $data);
+        return SeoService::tags($page, $data, $extra['canonical'] ?? null);
     }
 }

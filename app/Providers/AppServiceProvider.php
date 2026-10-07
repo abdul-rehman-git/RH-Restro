@@ -36,22 +36,13 @@ class AppServiceProvider extends ServiceProvider
         putenv("TMP={$tmpDir}");
 
         view()->composer('app', function ($view) {
+            $seoData = SettingStore::seoSettings();
             $seoDefaults = [
-                'default_description' => 'Discover modern essentials, smart gadgets, and lifestyle collections at RH Store.',
-                'default_og_image' => null,
-                'google_analytics_id' => '',
-                'google_site_verification' => '',
+                'default_description' => $seoData['default_description'] ?? 'Experience exquisite fine dining, artisan pizzas, gourmet burgers, sizzling steaks, and warm hospitality at RH Restro.',
+                'default_og_image' => ImageUrl::resolve($seoData['default_og_image']['url'] ?? $seoData['default_og_image_path'] ?? $seoData['default_og_image'] ?? null) ?: url('/rh-icon-512.png'),
+                'google_analytics_id' => $seoData['google_analytics_id'] ?? '',
+                'google_site_verification' => $seoData['google_site_verification'] ?? '',
             ];
-
-            if (Schema::hasTable('setting')) {
-                $seoData = SettingStore::seoSettings();
-                $seoDefaults = [
-                    'default_description' => $seoData['default_description'] ?? $seoDefaults['default_description'],
-                    'default_og_image' => ImageUrl::resolve($seoData['default_og_image']['url'] ?? $seoData['default_og_image_path'] ?? null),
-                    'google_analytics_id' => $seoData['google_analytics_id'] ?? '',
-                    'google_site_verification' => $seoData['google_site_verification'] ?? '',
-                ];
-            }
 
             $view->with('seoDefaults', $seoDefaults);
         });

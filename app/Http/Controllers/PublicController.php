@@ -63,6 +63,7 @@ class PublicController extends Controller
                 'jsonLd' => [
                     SeoService::organizationJsonLd($sitePayload),
                     SeoService::websiteJsonLd($sitePayload),
+                    SeoService::localBusinessJsonLd($sitePayload),
                 ],
             ]),
             'home' => [
@@ -90,15 +91,38 @@ class PublicController extends Controller
     public function shop(Request $request)
     {
         $sitePayload = $this->sitePayload();
+        $categorySlug = $request->string('category')->toString();
+        $selectedCategory = null;
+
+        if ($this->hasCatalogTables() && filled($categorySlug)) {
+            $selectedCategory = Category::query()->where('slug', $categorySlug)->first();
+        }
+
         $crumbs = [
-            ['label' => 'Home', 'url' => config('app.url') . '/'],
-            ['label' => 'Shop', 'url' => config('app.url') . '/shop'],
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Our Menu', 'url' => url('/shop')],
         ];
+
+        $pageTitle = null;
+        $pageDescription = null;
+
+        if ($selectedCategory) {
+            $crumbs[] = [
+                'label' => $selectedCategory->name,
+                'url' => url('/shop?category=' . $selectedCategory->slug),
+            ];
+            $pageTitle = "{$selectedCategory->name} Menu — {$sitePayload['name']}";
+            $pageDescription = filled($selectedCategory->description)
+                ? $selectedCategory->description
+                : "Explore our delicious {$selectedCategory->name} selection at {$sitePayload['name']}. Savor artisan culinary creations prepared fresh to order.";
+        }
 
         if (! $this->hasCatalogTables()) {
             return Inertia::render('Public/Shop', [
                 'site' => $sitePayload,
                 'seo' => $this->seoPayload('shop', [
+                    'title' => $pageTitle,
+                    'description' => $pageDescription,
                     'jsonLd' => [SeoService::breadcrumbJsonLd($crumbs)],
                 ]),
                 'products' => [
@@ -110,7 +134,7 @@ class PublicController extends Controller
                 ],
                 'categories' => [],
                 'filters' => [
-                    'category' => $request->string('category')->toString(),
+                    'category' => $categorySlug,
                     'max_price' => $request->input('max_price', 1000),
                     'sort' => $request->string('sort')->toString() ?: 'featured',
                 ],
@@ -121,7 +145,7 @@ class PublicController extends Controller
             ->with('category:id,name,slug')
             ->withApprovedReviewStats()
             ->active()
-            ->categorySlug($request->string('category')->toString())
+            ->categorySlug($categorySlug)
             ->priceBetween($request->input('min_price'), $request->input('max_price'))
             ->search($request->string('search')->toString());
 
@@ -135,10 +159,24 @@ class PublicController extends Controller
         $products = $query->paginate(9);
         $categories = Category::query()->active()->orderBy('sort_order')->orderBy('name')->get();
 
+        $dishListItems = $products->getCollection()->map(fn (Product $p): array => [
+            'slug' => $p->slug,
+            'title' => $p->title,
+        ])->all();
+
         return Inertia::render('Public/Shop', [
             'site' => $sitePayload,
             'seo' => $this->seoPayload('shop', [
-                'jsonLd' => [SeoService::breadcrumbJsonLd($crumbs)],
+                'title' => $pageTitle,
+                'description' => $pageDescription,
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                    SeoService::itemListJsonLd(
+                        $dishListItems,
+                        $selectedCategory ? "{$selectedCategory->name} Menu" : "Our Gourmet Menu",
+                        $request->fullUrl(),
+                    ),
+                ],
             ]),
             'products' => [
                 'current_page' => $products->currentPage(),
@@ -153,7 +191,7 @@ class PublicController extends Controller
                 'label' => $category->name,
             ])->all(),
             'filters' => [
-                'category' => $request->string('category')->toString(),
+                'category' => $categorySlug,
                 'max_price' => $request->input('max_price', 1000),
                 'sort' => $request->string('sort')->toString() ?: 'featured',
             ],
@@ -222,19 +260,30 @@ class PublicController extends Controller
         ];
 
         $crumbs = [
-            ['label' => 'Home', 'url' => config('app.url') . '/'],
-            ['label' => 'Shop', 'url' => config('app.url') . '/shop'],
-            ['label' => $product->title, 'url' => config('app.url') . '/product/' . $product->slug],
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Our Menu', 'url' => url('/shop')],
+        ];
+        if ($product->category) {
+            $crumbs[] = [
+                'label' => $product->category->name,
+                'url' => url('/shop?category=' . $product->category->slug),
+            ];
+        }
+        $crumbs[] = [
+            'label' => $product->title,
+            'url' => url('/product/' . $product->slug),
         ];
 
+        $sitePayload = $this->sitePayload();
+
         return Inertia::render('Public/ProductDetail', [
-            'site' => $this->sitePayload(),
+            'site' => $sitePayload,
             'seo' => $this->seoPayload('product', [
                 'product' => $productPayload,
                 'image' => $productPayload['images'][0] ?? null,
                 'description' => $product->short_description ?: $product->description,
                 'jsonLd' => [
-                    SeoService::productJsonLd($productPayload),
+                    SeoService::productJsonLd($productPayload, $sitePayload['name']),
                     SeoService::breadcrumbJsonLd($crumbs),
                 ],
             ]),
@@ -260,6 +309,10 @@ class PublicController extends Controller
         $about = SettingStore::aboutPage();
         $sitePayload = $this->sitePayload();
         $aboutPayload = $this->aboutContentPayload($about);
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Our Story', 'url' => url('/about')],
+        ];
 
         return Inertia::render('Public/About', [
             'site' => $sitePayload,
@@ -269,6 +322,7 @@ class PublicController extends Controller
                 'jsonLd' => [
                     SeoService::organizationJsonLd($sitePayload),
                     SeoService::articleJsonLd($aboutPayload),
+                    SeoService::breadcrumbJsonLd($crumbs),
                 ],
             ]),
             'about' => $aboutPayload,
@@ -278,12 +332,18 @@ class PublicController extends Controller
     public function contact()
     {
         $sitePayload = $this->sitePayload();
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Contact Us', 'url' => url('/contact')],
+        ];
 
         return Inertia::render('Public/Contact', [
             'site' => $sitePayload,
             'seo' => $this->seoPayload('contact', [
+                'description' => "Contact {$sitePayload['name']} for table reservations, private event catering, chef specials, and dining support. Call, WhatsApp, or visit us today.",
                 'jsonLd' => [
                     SeoService::localBusinessJsonLd($sitePayload),
+                    SeoService::breadcrumbJsonLd($crumbs),
                 ],
             ]),
         ]);
@@ -291,9 +351,18 @@ class PublicController extends Controller
 
     public function orderTracking()
     {
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Order Tracking', 'url' => url('/order-tracking')],
+        ];
+
         return Inertia::render('Public/OrderTracking', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('order-tracking'),
+            'seo' => $this->seoPayload('order-tracking', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
@@ -307,11 +376,26 @@ class PublicController extends Controller
                 ->first()
             : null;
 
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Guest Reviews', 'url' => url('/reviews')],
+        ];
+
+        if ($selectedProduct) {
+            $crumbs[] = [
+                'label' => $selectedProduct->title,
+                'url' => url('/reviews?product=' . $selectedProduct->slug),
+            ];
+        }
+
         if (! $this->hasReviewsTable()) {
             return Inertia::render('Public/Reviews', [
                 'site' => $this->sitePayload(),
                 'seo' => $this->seoPayload('reviews', [
                     'product' => $selectedProduct ? ['title' => $selectedProduct->title] : [],
+                    'jsonLd' => [
+                        SeoService::breadcrumbJsonLd($crumbs),
+                    ],
                 ]),
                 'productFilter' => $selectedProduct
                     ? [
@@ -357,6 +441,9 @@ class PublicController extends Controller
             'site' => $this->sitePayload(),
             'seo' => $this->seoPayload('reviews', [
                 'product' => $selectedProduct ? ['title' => $selectedProduct->title] : [],
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
             ]),
             'productFilter' => $selectedProduct
                 ? [
@@ -402,17 +489,35 @@ class PublicController extends Controller
 
     public function cart()
     {
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Cart', 'url' => url('/cart')],
+        ];
+
         return Inertia::render('Public/Cart', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('cart'),
+            'seo' => $this->seoPayload('cart', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
     public function checkout()
     {
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Checkout', 'url' => url('/checkout')],
+        ];
+
         return Inertia::render('Public/Checkout', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('checkout'),
+            'seo' => $this->seoPayload('checkout', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
@@ -420,11 +525,25 @@ class PublicController extends Controller
     {
         $sitePayload = $this->sitePayload();
         $processSteps = SettingStore::get('public_pages.about.process_steps', []);
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Table Reservations & Catering', 'url' => url('/custom-order')],
+        ];
+
+        $jsonLd = [
+            SeoService::localBusinessJsonLd($sitePayload),
+            SeoService::breadcrumbJsonLd($crumbs),
+        ];
+
+        if (!empty($processSteps)) {
+            $jsonLd[] = SeoService::faqJsonLd($processSteps);
+        }
 
         return Inertia::render('Public/CustomOrder', [
             'site' => $sitePayload,
             'seo' => $this->seoPayload('custom-order', [
-                'jsonLd' => $processSteps ? [SeoService::faqJsonLd($processSteps)] : [],
+                'description' => "Reserve your table or plan private dining catering with {$sitePayload['name']}. Personalized chef menus, private event rooms, and warm hospitality.",
+                'jsonLd' => $jsonLd,
             ]),
         ]);
     }
@@ -435,49 +554,216 @@ class PublicController extends Controller
             return redirect('/');
         }
 
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Sign In', 'url' => url('/sign-in')],
+        ];
+
         return Inertia::render('Public/Login', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('sign-in'),
+            'seo' => $this->seoPayload('sign-in', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
     public function faq()
     {
+        $sitePayload = $this->sitePayload();
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Frequently Asked Questions', 'url' => url('/faq')],
+        ];
+
+        $faqs = [
+            [
+                'q' => 'What dining and payment options do you accept?',
+                'a' => 'We welcome dine-in, takeaway, and online delivery orders. We accept all major credit/debit cards (Visa, MasterCard, Amex), PayPal, cash, and secure online payment gateways.',
+                'title' => 'What dining and payment options do you accept?',
+                'description' => 'We welcome dine-in, takeaway, and online delivery orders. We accept all major credit/debit cards (Visa, MasterCard, Amex), PayPal, cash, and secure online payment gateways.',
+            ],
+            [
+                'q' => 'How does hot express food delivery work?',
+                'a' => 'All delivery orders are prepared hot and packed in temperature-sealed, heat-locking containers. Delivery typically arrives within 30-45 minutes depending on destination.',
+                'title' => 'How does hot express food delivery work?',
+                'description' => 'All delivery orders are prepared hot and packed in temperature-sealed, heat-locking containers. Delivery typically arrives within 30-45 minutes depending on destination.',
+            ],
+            [
+                'q' => 'Are all meats and ingredients halal certified?',
+                'a' => 'Yes, 100% of our meat cuts, chicken, and ingredients are certified Halal and sourced fresh daily from verified organic suppliers.',
+                'title' => 'Are all meats and ingredients halal certified?',
+                'description' => 'Yes, 100% of our meat cuts, chicken, and ingredients are certified Halal and sourced fresh daily from verified organic suppliers.',
+            ],
+            [
+                'q' => 'How can I reserve a table for lunch or dinner?',
+                'a' => 'You can easily reserve a table online via our Reservations page, call our host desk directly, or message us on WhatsApp for instant confirmation.',
+                'title' => 'How can I reserve a table for lunch or dinner?',
+                'description' => 'You can easily reserve a table online via our Reservations page, call our host desk directly, or message us on WhatsApp for instant confirmation.',
+            ],
+            [
+                'q' => 'Do you provide private catering and event hosting?',
+                'a' => 'Yes! We cater corporate lunches, birthday parties, weddings, and private dinners with customized chef menus, live stations, and full dining setup.',
+                'title' => 'Do you provide private catering and event hosting?',
+                'description' => 'Yes! We cater corporate lunches, birthday parties, weddings, and private dinners with customized chef menus, live stations, and full dining setup.',
+            ],
+            [
+                'q' => 'Can I track my online order in real time?',
+                'a' => 'Yes, once you place an order, you will receive an order number to track kitchen preparation, dispatch, and delivery status on our Order Tracking page.',
+                'title' => 'Can I track my online order in real time?',
+                'description' => 'Yes, once you place an order, you will receive an order number to track kitchen preparation, dispatch, and delivery status on our Order Tracking page.',
+            ],
+            [
+                'q' => 'What is your cancellation and refund policy?',
+                'a' => 'Orders can be modified or cancelled before kitchen preparation begins. If you experience any quality issue, our manager will issue a prompt replacement or full refund.',
+                'title' => 'What is your cancellation and refund policy?',
+                'description' => 'Orders can be modified or cancelled before kitchen preparation begins. If you experience any quality issue, our manager will issue a prompt replacement or full refund.',
+            ],
+            [
+                'q' => 'Do you accommodate allergies and dietary restrictions?',
+                'a' => 'Our master chefs gladly customize dishes for gluten-free, vegetarian, nut-free, or dairy-free preferences. Please add a note to your order or inform your server.',
+                'title' => 'Do you accommodate allergies and dietary restrictions?',
+                'description' => 'Our master chefs gladly customize dishes for gluten-free, vegetarian, nut-free, or dairy-free preferences. Please add a note to your order or inform your server.',
+            ],
+        ];
+
         return Inertia::render('Public/Faq', [
-            'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('faq'),
+            'site' => $sitePayload,
+            'faqs' => $faqs,
+            'seo' => $this->seoPayload('faq', [
+                'jsonLd' => [
+                    SeoService::faqJsonLd($faqs),
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
     public function terms()
     {
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Terms of Service', 'url' => url('/terms')],
+        ];
+
         return Inertia::render('Public/Terms', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('terms'),
+            'seo' => $this->seoPayload('terms', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
     public function privacyPolicy()
     {
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Privacy Policy', 'url' => url('/privacy-policy')],
+        ];
+
         return Inertia::render('Public/PrivacyPolicy', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('privacy-policy'),
+            'seo' => $this->seoPayload('privacy-policy', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
     public function shippingPolicy()
     {
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Delivery Policy', 'url' => url('/shipping-policy')],
+        ];
+
         return Inertia::render('Public/ShippingPolicy', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('shipping-policy'),
+            'seo' => $this->seoPayload('shipping-policy', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
         ]);
     }
 
     public function returns()
     {
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Refund Policy', 'url' => url('/returns')],
+        ];
+
         return Inertia::render('Public/Returns', [
             'site' => $this->sitePayload(),
-            'seo' => $this->seoPayload('returns'),
+            'seo' => $this->seoPayload('returns', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
+        ]);
+    }
+
+    public function sitemap()
+    {
+        $sitePayload = $this->sitePayload();
+        $crumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Sitemap', 'url' => url('/sitemap')],
+        ];
+
+        $categories = $this->hasCatalogTables()
+            ? Category::query()
+                ->active()
+                ->withCount(['products' => fn ($query) => $query->where('is_active', true)])
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get()
+                ->map(fn (Category $category): array => [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'description' => $category->description,
+                    'products_count' => $category->products_count,
+                    'url' => url('/shop?category='.$category->slug),
+                ])
+                ->all()
+            : [];
+
+        $featuredDishes = $this->hasCatalogTables()
+            ? Product::query()
+                ->active()
+                ->where('is_featured', true)
+                ->with('category:id,name,slug')
+                ->orderBy('sort_order')
+                ->latest()
+                ->limit(12)
+                ->get()
+                ->map(fn (Product $product): array => [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'slug' => $product->slug,
+                    'price' => (float) $product->price,
+                    'category' => $product->category?->name,
+                    'url' => url('/product/'.$product->slug),
+                ])
+                ->all()
+            : [];
+
+        return Inertia::render('Public/Sitemap', [
+            'site' => $sitePayload,
+            'seo' => $this->seoPayload('sitemap', [
+                'jsonLd' => [
+                    SeoService::breadcrumbJsonLd($crumbs),
+                ],
+            ]),
+            'categories' => $categories,
+            'featuredDishes' => $featuredDishes,
+            'xmlSitemapUrl' => url('/sitemap.xml'),
         ]);
     }
 

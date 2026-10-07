@@ -7,11 +7,11 @@ Allow: /contact
 Allow: /reviews
 Allow: /custom-order
 Allow: /faq
+Allow: /sitemap
 Allow: /terms
 Allow: /privacy-policy
 Allow: /shipping-policy
 Allow: /returns
-Allow: /sitemap
 Allow: /build/
 Allow: /storage/
 
@@ -38,4 +38,4 @@ Disallow: /register
 Disallow: /forgot-password
 Disallow: /reset-password
 
-Sitemap: {{ rtrim(config('app.url'), '/') }}/sitemap.xml
+Sitemap: http://rh-restro.test/sitemap.xml

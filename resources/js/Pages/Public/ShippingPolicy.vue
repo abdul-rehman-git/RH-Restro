@@ -14,13 +14,13 @@ const page = usePage();
         <div class="min-h-screen bg-background">
             <section class="py-8 sm:py-20 bg-background">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <SectionHeader title="Shipping Policy" subtitle="Everything you need to know about shipping and delivery." centered />
+                    <SectionHeader tag="h1" title="Delivery Policy" subtitle="Everything you need to know about our hot express delivery and takeaway." centered />
                     <div class="mt-8 sm:mt-12 space-y-6 sm:space-y-8 text-sm sm:text-base text-muted-foreground leading-relaxed">
                         <div v-reveal="{ preset: 'fadeUp', duration: 600 }">
                             <h2 class="text-xl font-semibold text-foreground mb-3 flex items-center gap-2">
-                                <Truck class="w-5 h-5 text-amber-500" /> 1. Processing Time
+                                <Truck class="w-5 h-5 text-amber-500" /> 1. Preparation & Delivery Window
                             </h2>
-                            <p>Orders are processed within 1-3 business days after payment confirmation. Custom and personalized items may require additional processing time, which will be communicated to you at the time of order.</p>
+                            <p>All meals are prepared fresh upon order placement. Hot express delivery typically arrives in 30-45 minutes within our standard service radius, packed in heat-retaining insulated containers.</p>
                         </div>
                         <div v-reveal="{ preset: 'fadeUp', duration: 600, delay: 50 }">
                             <h2 class="text-xl font-semibold text-foreground mb-3 flex items-center gap-2">

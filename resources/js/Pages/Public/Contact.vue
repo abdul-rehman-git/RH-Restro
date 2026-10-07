@@ -50,8 +50,9 @@ const submit = async () => {
         <div class="min-h-screen bg-background py-8 sm:py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeader
+                    tag="h1"
                     title="Get in Touch"
-                    subtitle="Have a question, custom watch inquiry, or order query? We would love to hear from you."
+                    subtitle="Have a question, table reservation request, private catering inquiry, or feedback? We would love to hear from you."
                     centered
                 />
 
