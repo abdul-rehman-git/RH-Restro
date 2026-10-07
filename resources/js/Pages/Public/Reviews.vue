@@ -73,11 +73,13 @@ const initials = (name) =>
         <div class="min-h-screen bg-background py-8 sm:py-12">
             <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <SectionHeader
+                    tag="h1"
                     :title="
                         productFilter
                             ? `${productFilter.title} Reviews`
-                            : 'Customer Reviews'
+                            : 'Guest Reviews & Ratings'
                     "
+                    subtitle="Honest dining experiences and feedback from our valued food lovers."
                 />
 
                 <div class="mb-6 sm:mb-8 flex flex-col gap-3 rounded-xl border border-border bg-card p-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 sm:p-5">

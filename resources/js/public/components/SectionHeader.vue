@@ -5,6 +5,7 @@ const props = defineProps({
     title: { type: String, required: true },
     subtitle: { type: String, default: '' },
     centered: { type: Boolean, default: false },
+    tag: { type: String, default: 'h2' },
 });
 
 const titleWords = computed(() => props.title.split(/\s+/).filter(Boolean));
@@ -15,7 +16,10 @@ const titleWords = computed(() => props.title.split(/\s+/).filter(Boolean));
         v-reveal="{ preset: 'fadeUp', duration: 650 }"
         :class="`mb-10 sm:mb-12 ${props.centered ? 'text-center' : ''}`"
     >
-        <h2 class="mb-3 text-3xl font-bold leading-tight text-foreground sm:mb-4 sm:text-4xl">
+        <component
+            :is="props.tag || 'h2'"
+            class="mb-3 text-3xl font-bold leading-tight text-foreground sm:mb-4 sm:text-4xl"
+        >
             <span
                 :class="[
                     'inline-flex flex-wrap items-baseline gap-x-[0.24em] gap-y-1',
@@ -26,7 +30,7 @@ const titleWords = computed(() => props.title.split(/\s+/).filter(Boolean));
                     <span :class="{ 'text-gold-gradient': i === titleWords.length - 1 }">{{ word }}</span>
                 </template>
             </span>
-        </h2>
+        </component>
         <p
             v-if="props.subtitle"
             class="max-w-2xl text-muted-foreground leading-7 sm:text-lg"

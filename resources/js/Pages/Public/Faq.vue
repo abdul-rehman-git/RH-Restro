@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { HelpCircle, ChevronDown } from 'lucide-vue-next';
 import SeoHead from '@/Components/SeoHead.vue';
@@ -7,40 +8,51 @@ import SectionHeader from '@/public/components/SectionHeader.vue';
 
 const page = usePage();
 
-const faqs = [
+const defaultFaqs = [
     {
-        q: 'What payment methods do you accept?',
-        a: 'We accept all major credit cards (Visa, Mastercard, American Express), PayPal, and bank transfers for custom orders. All transactions are processed securely.',
+        q: 'What dining and payment options do you accept?',
+        a: 'We welcome dine-in, takeaway, and online delivery orders. We accept all major credit/debit cards (Visa, MasterCard, Amex), PayPal, cash, and secure online payment gateways.',
     },
     {
-        q: 'How long does shipping take?',
-        a: 'Domestic orders typically arrive within 5-10 business days. International shipping can take 10-20 business days depending on the destination and customs clearance.',
+        q: 'How does hot express food delivery work?',
+        a: 'All delivery orders are prepared hot and packed in temperature-sealed, heat-locking containers. Delivery typically arrives within 30-45 minutes depending on destination.',
     },
     {
-        q: 'Do you offer international shipping?',
-        a: 'Yes, we ship worldwide. International shipping rates and delivery times vary by location. Duties and taxes may apply and are the responsibility of the customer.',
+        q: 'Are all meats and ingredients halal certified?',
+        a: 'Yes, 100% of our meat cuts, chicken, and ingredients are certified Halal and sourced fresh daily from verified organic suppliers.',
     },
     {
-        q: 'Can I track my order?',
-        a: 'Yes, once your order is dispatched, you will receive a tracking number via email. You can also track your order on our Order Tracking page.',
+        q: 'How can I reserve a table for lunch or dinner?',
+        a: 'You can easily reserve a table online via our Reservations page, call our host desk directly, or message us on WhatsApp for instant confirmation.',
     },
     {
-        q: 'What is your return policy?',
-        a: 'We offer a 14-day return policy for unworn items in original condition. Custom and personalized items are non-returnable unless defective.',
+        q: 'Do you provide private catering and event hosting?',
+        a: 'Yes! We cater corporate lunches, birthday parties, weddings, and private dinners with customized chef menus, live stations, and full dining setup.',
     },
     {
-        q: 'How do I care for my items?',
-        a: 'Keep products stored in a dry, temperate environment. Follow product-specific care instructions included with your packaging for cleaning and upkeep.',
+        q: 'Can I track my online order in real time?',
+        a: 'Yes, once you place an order, you will receive an order number to track kitchen preparation, dispatch, and delivery status on our Order Tracking page.',
     },
     {
-        q: 'Do you offer warranty?',
-        a: 'All our products come with a 1-year warranty against manufacturing defects. The warranty does not cover accidental damage or normal wear and tear.',
+        q: 'What is your cancellation and refund policy?',
+        a: 'Orders can be modified or cancelled before kitchen preparation begins. If you experience any quality issue, our manager will issue a prompt replacement or full refund.',
     },
     {
-        q: 'Can I request a custom design?',
-        a: 'Absolutely! Visit our Custom Order page to submit your design ideas. Our team will work with you to create a one-of-a-kind piece tailored to your preferences.',
+        q: 'Do you accommodate allergies and dietary restrictions?',
+        a: 'Our master chefs gladly customize dishes for gluten-free, vegetarian, nut-free, or dairy-free preferences. Please add a note to your order or inform your server.',
     },
 ];
+
+const faqs = computed(() => {
+    const passed = page.props.faqs;
+    if (Array.isArray(passed) && passed.length > 0) {
+        return passed.map((f) => ({
+            q: f.question || f.q || f.title || '',
+            a: f.answer || f.a || f.description || '',
+        }));
+    }
+    return defaultFaqs;
+});
 </script>
 
 <template>
@@ -49,12 +61,12 @@ const faqs = [
         <div class="min-h-screen bg-background">
             <section class="py-8 sm:py-20 bg-background">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <SectionHeader title="Frequently Asked Questions" subtitle="Find answers to common questions about our products and services." centered />
+                    <SectionHeader tag="h1" title="Frequently Asked Questions" subtitle="Find answers to common questions about dining, ordering, reservations, and catering." centered />
                     <div v-stagger="{ preset: 'fadeUp', stagger: 80, duration: 600 }" class="mt-8 sm:mt-12 space-y-3 sm:space-y-4">
                         <details v-for="(faq, index) in faqs" :key="index"
                             class="group rounded-xl border border-border bg-card overflow-hidden">
                             <summary
-                                class="flex items-center justify-between px-4 py-3.5 sm:px-6 sm:py-5 cursor-pointer text-sm sm:text-base text-foreground font-medium hover:bg-muted/50 transition-colors [&::-webkit-details-marker]:hidden">
+                                class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-5 cursor-pointer text-sm sm:text-base text-foreground font-medium hover:bg-muted/50 transition-colors [&::-webkit-details-marker]:hidden">
                                 <span class="flex items-center gap-2.5 sm:gap-3">
                                     <HelpCircle class="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 flex-shrink-0" />
                                     <span>{{ faq.q }}</span>

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Setting;
 use App\Support\ImageUrl;
 use App\Support\SeoService;
+use App\Support\SettingStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
@@ -33,39 +34,20 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $site = SettingStore::publicSite();
+        $seoSettings = SettingStore::seoSettings();
+
         $businessSettings = [
-            'name' => 'RH Commerce',
-            'logoUrl' => null,
+            'name' => $site['name'] ?? 'RH Restro',
+            'logoUrl' => ImageUrl::resolve($site['logo']['url'] ?? $site['logo_path'] ?? $site['logo'] ?? null),
         ];
 
-        $siteData = [];
         $seoDefaults = [
-            'default_description' => 'Discover curated smart gadgets, lifestyle accessories, home essentials, and modern goods with seamless shopping and reliable delivery at RH.',
-            'default_og_image' => '/rh-icon-512.png',
-            'google_analytics_id' => '',
-            'google_site_verification' => '',
+            'default_description' => $seoSettings['default_description'] ?? 'Experience exquisite fine dining, artisan pizzas, gourmet burgers, sizzling steaks, and warm hospitality at RH Restro.',
+            'default_og_image' => ImageUrl::resolve($seoSettings['default_og_image']['url'] ?? $seoSettings['default_og_image_path'] ?? $seoSettings['default_og_image'] ?? null) ?: url('/rh-icon-512.png'),
+            'google_analytics_id' => $seoSettings['google_analytics_id'] ?? '',
+            'google_site_verification' => $seoSettings['google_site_verification'] ?? '',
         ];
-
-        if (Schema::hasTable('setting')) {
-            $settings = Setting::query()->first();
-            $data = $settings?->data ?? [];
-
-            if ($settings) {
-                $businessSettings = [
-                    'name' => $data['business_name'] ?? 'RH Commerce',
-                    'logoUrl' => ImageUrl::resolve($data['business_logo']['url'] ?? $data['business_logo_path'] ?? null),
-                ];
-
-                $siteData = $data['public_site'] ?? [];
-                $seoData = $data['seo'] ?? [];
-                $seoDefaults = [
-                    'default_description' => $seoData['default_description'] ?? $seoDefaults['default_description'],
-                    'default_og_image' => ImageUrl::resolve($seoData['default_og_image']['url'] ?? $seoData['default_og_image_path'] ?? null),
-                    'google_analytics_id' => $seoData['google_analytics_id'] ?? '',
-                    'google_site_verification' => $seoData['google_site_verification'] ?? '',
-                ];
-            }
-        }
 
         return [
             ...parent::share($request),

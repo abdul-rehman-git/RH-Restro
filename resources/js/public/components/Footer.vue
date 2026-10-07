@@ -24,6 +24,7 @@ const props = defineProps({
             { label: 'Guest Reviews', href: '/reviews' },
             { label: 'Privacy Policy', href: '/privacy-policy' },
             { label: 'Terms of Service', href: '/terms' },
+            { label: 'Sitemap', href: '/sitemap' },
         ],
     },
     bottomLinks: {
@@ -32,6 +33,8 @@ const props = defineProps({
             { label: 'Privacy Policy', href: '/privacy-policy' },
             { label: 'Terms of Service', href: '/terms' },
             { label: 'FAQ', href: '/faq' },
+            { label: 'Sitemap', href: '/sitemap' },
+            { label: 'XML Sitemap', href: '/sitemap.xml' },
         ],
     },
 });

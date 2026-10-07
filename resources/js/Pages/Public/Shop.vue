@@ -137,7 +137,7 @@ const applyMobilePrice = () => {
         <div class="min-h-screen bg-background py-6 pb-24 sm:py-12 md:pb-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-6 sm:mb-8">
-                    <SectionHeader title="Our Gourmet Menu"
+                    <SectionHeader tag="h1" title="Our Gourmet Menu"
                         subtitle="Explore our handcrafted culinary delights — filter by category, price, and chef specialties." />
                 </div>
 

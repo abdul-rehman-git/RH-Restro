@@ -76,6 +76,7 @@ Route::get('/terms', [PublicController::class, 'terms'])->name('public.terms');
 Route::get('/privacy-policy', [PublicController::class, 'privacyPolicy'])->name('public.privacy-policy');
 Route::get('/shipping-policy', [PublicController::class, 'shippingPolicy'])->name('public.shipping-policy');
 Route::get('/returns', [PublicController::class, 'returns'])->name('public.returns');
+Route::get('/sitemap', [PublicController::class, 'sitemap'])->name('public.sitemap');
 Route::get('/sign-in', [PublicController::class, 'login'])->name('public.sign-in');
 
 Route::get('/dashboard', function () {

@@ -1,0 +1,36 @@
+{
+  "name": "RH Restro - Fine Dining & Gourmet Restaurant",
+  "short_name": "RH Restro",
+  "description": "Experience exquisite fine dining, artisan pizzas, gourmet burgers, sizzling steaks, and warm hospitality at RH Restro.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "orientation": "portrait",
+  "categories": ["food", "restaurants", "shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon-32x32.png?v=rh4",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/rh-icon-192.png?v=rh4",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/rh-icon-512.png?v=rh4",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/rh-icon.svg?v=rh4",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
+
