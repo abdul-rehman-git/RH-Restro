@@ -36,5 +36,5 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 config.bat
-/vendor
-/public/build
+# /vendor
+# /public/build
